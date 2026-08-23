@@ -148,12 +148,12 @@ def menu_principal():
     
     while True:
         print("\n=== SISTEMA DE GESTIÓN HOSPITALARIA (CMMS) ===")
-        print("1. ➕ Registrar nuevo equipo")
-        print("2. 📋 Ver todos los equipos")
-        print("3. 🗑️ Dar de baja / Eliminar un equipo")
-        print("4. ⚠️ Cargar reporte de falla")
-        print("5. 🔍 Ver historial de fallas de un equipo")
-        print("6. 🚪 Salir")
+        print("1.  Registrar nuevo equipo")
+        print("2.  Ver todos los equipos")
+        print("3.  Dar de baja / Eliminar un equipo")
+        print("4.  Cargar reporte de falla")
+        print("5.  Ver historial de fallas de un equipo")
+        print("6.  Salir")
         
         opcion = input("Selecciona una opción (1-6): ").strip()
 
