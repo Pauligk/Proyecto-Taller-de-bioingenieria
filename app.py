@@ -49,7 +49,7 @@ def reportar_falla(equipo_id):
 
 @app.route("/eliminar/<int:id>")
 def eliminar(id):
-    dar_de_baja_equipo(id)
+    baja_total(id)
     return redirect(url_for("panel_principal"))
 
 @app.route("/descartados")
