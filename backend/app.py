@@ -49,8 +49,15 @@ def reportar_falla(equipo_id):
 
 @app.route("/eliminar/<int:id>")
 def eliminar(id):
-    eliminar_equipo(id)
+    dar_de_baja_equipo(id)
     return redirect(url_for("panel_principal"))
+
+@app.route("/descartados")
+def equipos_descartados():
+    # Usamos la función de db.py para traer solo los descartados
+    filas_baja = obtener_equipos_descartados() 
+    # Se los mandamos a tu nueva pantalla HTML
+    return render_template("descartados.html", equipos=filas_baja)
 
 if __name__ == "__main__":
     inicializar_base_de_datos()

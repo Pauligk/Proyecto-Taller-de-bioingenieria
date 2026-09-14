@@ -36,3 +36,4 @@ def procesar_triaje_equipos(filas_sql):
     # Orden descendente: el equipo más crítico queda primero en la lista
     equipos_procesados.sort(key=lambda x: x["indice_em"], reverse=True)
     return equipos_procesados
+
