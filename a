@@ -1,0 +1,77 @@
+[33mcommit 8de8ef9be5352fc0b3bff6290be9bba8840f4916[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Wed Sep 16 09:50:03 2026 -0300
+
+    Cambios en actualizacion de pagina
+
+[33mcommit 5f3eba5e0ff6e6dec0d3e2bb111c3009d20d838e[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Wed Sep 16 09:46:10 2026 -0300
+
+    Cambios en actualizacion de pagina
+
+[33mcommit 8c8c90396ea7fd7654a522a9d3d6f3cb2e702f56[m
+Author: fedevillaverde <federicovillaverde00@gmail.com>
+Date:   Wed Sep 16 08:31:12 2026 -0300
+
+    Botones de la interfaz y rutas que faltaban
+
+[33mcommit da3b1e3436df863b0ef9dd6e178e0d7a091769b7[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Mon Sep 14 17:39:56 2026 -0300
+
+    Nuevas funciones (intervenciones y fallas) y cambios de estructura
+
+[33mcommit a8f4eeba206bb40486fad526ee7ef8d4aa44b735[m
+Author: fedevillaverde <federicovillaverde00@gmail.com>
+Date:   Mon Sep 14 16:45:55 2026 -0300
+
+    Agregué descartados
+
+[33mcommit 5ae5eee812ecd9b3f44b520170314569604006fd[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Fri Sep 11 19:30:37 2026 -0300
+
+    intento de hosteo
+
+[33mcommit e95c8c67e57ebee35303cfe6355948372e22ad2b[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Fri Sep 11 18:54:05 2026 -0300
+
+    Compartimentalizacion V 2.0
+
+[33mcommit b6d1da156d7354dfe0efe4c5a55fb7cef41ef430[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Mon Aug 31 17:33:13 2026 -0300
+
+    cambios en la distribucion de archivos
+
+[33mcommit cf99142099f46fc7678d8cf6683ad1a8f764c0a7[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Mon Aug 31 16:57:57 2026 -0300
+
+    Primer prototipo de Backend con frontend descartable
+
+[33mcommit 68fa1a09424b120c14ac5d0dd4232497524cd5fb[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Sun Aug 23 19:03:41 2026 -0300
+
+    prototipo funcional de la base de datos
+
+[33mcommit bb514433396b7c3da82b80235766092351bb8cf6[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Sun Aug 23 18:56:03 2026 -0300
+
+    la base de datos es funcional (gracias a dios)
+
+[33mcommit cfb5a4474c43bad4edb3ddcef0aade56b26e157a[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Thu Aug 6 16:17:49 2026 -0300
+
+    implementacion de base de datos
+
+[33mcommit 3284b64a9d657b71f64acaa4324dc0b2f5b68407[m
+Author: Pauligk <pauligkmaximo@gmail.com>
+Date:   Thu Aug 6 15:05:33 2026 -0300
+
+    first commit
