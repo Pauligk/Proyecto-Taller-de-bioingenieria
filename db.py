@@ -27,7 +27,8 @@ def inicializar_base_de_datos():
         puntaje_aplicacion REAL DEFAULT 5.0,
         puntaje_mantenimiento REAL DEFAULT 3.0,
         manual_url TEXT,
-        estado TEXT Activo, mantenimiento, Descartado NOT NULL DEFAULT 'Activo'
+        estado TEXT DEFAULT 'Activo'
+        
     );
     """)
 
@@ -49,13 +50,13 @@ def inicializar_base_de_datos():
     CREATE TABLE IF NOT EXISTS intervenciones (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         equipo_id INTEGER NOT NULL,
-        tipo_intervencion calibracion, preventivo, correctivo, NOT NULL,
+        tipo_intervencion TEXT NOT NULL,
         fecha_intervencion TEXT NOT NULL,
         usuario_interviene TEXT NOT NULL,
         area TEXT NOT NULL,
         descripcion TEXT NOT NULL,
         falla_solucionada TEXT NOT NULL,
-        repuestos_utilizados TEXT 'Ninguno',
+        repuestos_utilizados TEXT DEFAULT 'Ninguno',
         estado_final TEXT NOT NULL,
         tiempo_intervencion REAL NOT NULL,
         observaciones TEXT DEFAULT 'Ninguna',
@@ -88,8 +89,10 @@ def obtener_equipo_con_intervenciones(equipo_id):
         return equipo, intervenciones
     finally:
         conexion.close()
+
+
 def insertar_intervencion(equipo_id, tipo_intervencion, fecha_intervencion, usuario_interviene, area, descripcion, falla_solucionada, repuestos_utilizados, estado_final, tiempo_intervencion, observaciones):
-    """Registra una intervención en la base de datos"""
+    """Registra una intervención en la base de datos (NUEVO RENGLÓN)"""
     conexion = obtener_conexion()
     try:
         conexion.execute("""
@@ -173,6 +176,17 @@ def obtener_equipos_mantenimiento():
         WHERE e.estado = 'Mantenimiento'
         GROUP BY e.id
         """).fetchall()
+    finally:
+        conexion.close()
+
+def obtener_historia_completa(equipo_id):
+    """Obtiene los datos del equipo, sus fallas y sus intervenciones (OT)"""
+    conexion = obtener_conexion()
+    try:
+        equipo = conexion.execute("SELECT * FROM equipos WHERE id = ?", (equipo_id,)).fetchone()
+        fallas = conexion.execute("SELECT * FROM historial_fallas WHERE equipo_id = ? ORDER BY id DESC", (equipo_id,)).fetchall()
+        intervenciones = conexion.execute("SELECT * FROM intervenciones WHERE equipo_id = ? ORDER BY id DESC", (equipo_id,)).fetchall()
+        return equipo, fallas, intervenciones
     finally:
         conexion.close()
 

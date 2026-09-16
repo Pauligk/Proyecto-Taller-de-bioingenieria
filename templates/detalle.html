@@ -3,286 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Taller de Bioingenieria | Monitoreo y Gestión Hospitalaria - UNER</title>
+    <title>Historia Clínica - {{ equipo.nombre }}</title>
     
-    <!-- Tipografía Inter & Bootstrap 5 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Iconos de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
-            color: #1e293b;
-        }
-        .navbar-custom {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .stat-card {
-            background: #ffffff;
-            border-left: 5px solid #2563eb;
-        }
-        .stat-card.stat-danger { border-left-color: #dc2626; }
-        .stat-card.stat-warning { border-left-color: #f59e0b; }
-        .stat-card.stat-success { border-left-color: #10b981; }
-        
-        .table thead th {
-            background-color: #0f172a;
-            color: #f8fafc;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            padding: 14px 12px;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #f8fafc;
-        }
-        .badge-priority {
-            font-size: 0.8rem;
-            padding: 6px 12px;
-            font-weight: 600;
-            border-radius: 20px;
-        }
-        .btn-action {
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #96bbe1; color: #1e293b; }
+        .navbar-custom { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .table thead th { background-color: #0f172a; color: #f8fafc; font-size: 0.85rem; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<!-- Barra de Navegación Superior -->
 <nav class="navbar navbar-dark navbar-custom py-3 mb-4">
     <div class="container-fluid px-4">
         <span class="navbar-brand mb-0 h1 d-flex align-items-center gap-2">
-            <i class="bi bi-heart-pulse-fill text-danger fs-4"></i>
-            <span class="fw-bold">Proyecto Taller de Bioingenieria</span>
-            <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-2 fs-6">UNER Bioingeniería</span>
+            <i class="bi bi-clipboard2-pulse-fill text-info fs-4"></i>
+            <span class="fw-bold">Historia Clínica del Activo</span>
         </span>
-        <div class="d-flex align-items-center text-white-50 small gap-3">
-            <span><i class="bi bi-shield-check text-info me-1"></i> Trazabilidad Ley 26.906 / ANMAT</span>
-            <span class="badge bg-dark border border-secondary px-3 py-2">Modelo Smith & Alburaiesi</span>
-        </div>
+        <a href="/" class="btn btn-light btn-sm fw-bold text-primary"><i class="bi bi-arrow-left-circle me-1"></i> Volver al Inicio</a>
     </div>
 </nav>
 
 <div class="container-fluid px-4 pb-5">
-
-    <!-- Tarjetas de Métricas (KPIs) -->
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <div class="card stat-card p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-muted small fw-semibold">ACTIVOS EN INVENTARIO</div>
-                        <div class="fs-3 fw-bold text-dark">{{ equipos|length }}</div>
-                    </div>
-                    <div class="bg-primary-subtle text-primary p-3 rounded-circle">
-                        <i class="bi bi-cpu fs-4"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card stat-danger p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-muted small fw-semibold">TRIAJE: PRIORIDAD ALTA</div>
-                        <div class="fs-3 fw-bold text-danger">
-                            {{ equipos|selectattr('prioridad', 'equalto', 'ALTA')|list|length }}
-                        </div>
-                    </div>
-                    <div class="bg-danger-subtle text-danger p-3 rounded-circle">
-                        <i class="bi bi-exclamation-octagon fs-4"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card stat-warning p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-muted small fw-semibold">PREVENTIVOS PRÓXIMOS</div>
-                        <div class="fs-3 fw-bold text-warning">
-                            {{ equipos|selectattr('prioridad', 'equalto', 'MEDIA')|list|length }}
-                        </div>
-                    </div>
-                    <div class="bg-warning-subtle text-warning p-3 rounded-circle">
-                        <i class="bi bi-tools fs-4"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card stat-card stat-success p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-muted small fw-semibold">ESTADO NORMAL</div>
-                        <div class="fs-3 fw-bold text-success">
-                            {{ equipos|selectattr('prioridad', 'equalto', 'BAJA')|list|length }}
-                        </div>
-                    </div>
-                    <div class="bg-success-subtle text-success p-3 rounded-circle">
-                        <i class="bi bi-check-circle fs-4"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón desplegable para Registrar Nuevo Equipo -->
-    <div class="mb-4">
-        <button class="btn btn-primary btn-action shadow-sm py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFormulario">
-            <i class="bi bi-plus-circle me-1"></i> Registrar Nuevo Dispositivo Biomédico
-        </button>
-    </div>
-
-    <!-- Formulario de Alta Colapsable -->
-    <div class="collapse mb-4" id="collapseFormulario">
-        <div class="card p-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-clipboard2-plus me-2"></i>Ficha de Alta y Ponderación Inicial</h5>
-            <form action="/agregar_equipo" method="POST" class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Código ANMAT / Trazabilidad</label>
-                    <input type="text" name="codigo" class="form-control" required placeholder="Ej: ANMAT-ECG-004">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Nombre del Equipo</label>
-                    <input type="text" name="nombre" class="form-control" required placeholder="Ej: Monitor Multiparamétrico">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Marca y Modelo</label>
-                    <input type="text" name="marca" class="form-control" required placeholder="Ej: Mindray uMEC10">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Ubicación / Servicio Clínico</label>
-                    <input type="text" name="ubicacion" class="form-control" required placeholder="Ej: Terapia Intensiva">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Función Clínica (1 - 10)</label>
-                    <input type="number" step="0.5" name="funcion" class="form-control" value="7.0" required>
-                    <div class="form-text small">Diagnóstico o soporte de vida.</div>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Riesgo / Aplicación (1 - 10)</label>
-                    <input type="number" step="0.5" name="aplicacion" class="form-control" value="5.0" required>
-                    <div class="form-text small">Impacto de riesgo en paciente.</div>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Complejidad Mantenimiento (1 - 5)</label>
-                    <input type="number" step="0.5" name="mantenimiento" class="form-control" value="3.0" required>
-                    <div class="form-text small">Requisitos de calibración técnica.</div>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Manual Digital (URL / Archivo)</label>
-                    <input type="text" name="manual" class="form-control" placeholder="manual_mindray.pdf">
-                </div>
-                <div class="col-12 text-end mt-4">
-                    <button type="button" class="btn btn-light me-2 btn-action" data-bs-toggle="collapse" data-bs-target="#collapseFormulario">Cancelar</button>
-                    <button type="submit" class="btn btn-success btn-action px-4"><i class="bi bi-save me-1"></i> Guardar Activo</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Tabla Principal de Triaje y Criticidad -->
-    <div class="card overflow-hidden">
-        <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-sort-numeric-down text-primary me-2"></i>Triaje Técnico de Equipamiento Médico</h5>
-                <small class="text-muted">Ordenado dinámicamente por criticidad acumulada (EM = Función + Aplicación + Mantenimiento + Historia)</small>
-            </div>
-            <span class="badge bg-light text-secondary border px-3 py-2">Actualización en tiempo real</span>
-        </div>
+    <div class="row g-4">
         
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th class="text-center">Nivel Triaje</th>
-                        <th>Índice EM</th>
-                        <th>Código / Trazabilidad</th>
-                        <th>Dispositivo</th>
-                        <th>Ubicación</th>
-                        <th>Historia de Fallas</th>
-                        <th class="text-center">Gestión Técnica</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for eq in equipos %}
-                    <tr>
-                        <td class="text-center">
-                            <span class="badge bg-{{ eq.color_badge }} badge-priority shadow-sm">
-                                {% if eq.prioridad == 'ALTA' %}<i class="bi bi-fire me-1"></i>{% endif %}
-                                {% if eq.prioridad == 'MEDIA' %}<i class="bi bi-clock-history me-1"></i>{% endif %}
-                                {% if eq.prioridad == 'BAJA' %}<i class="bi bi-check2-circle me-1"></i>{% endif %}
-                                {{ eq.prioridad }}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="fs-5 fw-bold text-dark">{{ "%.1f"|format(eq.indice_em) }}</span>
-                            <span class="text-muted small">pts</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary-subtle text-secondary font-monospace border px-2 py-1">
-                                {{ eq.codigo_trazabilidad }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="fw-bold text-dark">{{ eq.nombre }}</div>
-                            <div class="text-muted small">{{ eq.marca }}</div>
-                        </td>
-                        <td>
-                            <i class="bi bi-geo-alt text-danger me-1"></i>{{ eq.ubicacion }}
-                        </td>
-                        <td>
-                            <span class="badge bg-light text-dark border">
-                                <i class="bi bi-wrench-adjustable me-1 text-primary"></i>{{ eq.cantidad_fallas }} reportes
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <div class="btn-group" role="group">
-                                <a href="/equipo/{{ eq.id }}" class="btn btn-outline-primary btn-sm btn-action">
-                                    <i class="bi bi-clipboard2-pulse me-1"></i> Historia Clínica
-                                </a>
-                                <a href="/eliminar/{{ eq.id }}" class="btn btn-outline-danger btn-sm btn-action" onclick="return confirm('¿Confirma la baja definitiva del activo?');">
-                                    <i class="bi bi-trash3"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="7" class="text-center py-5 text-muted">
-                            <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
-                            No hay dispositivos cargados en la base de datos.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <!-- Tarjeta de Datos Estáticos -->
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-top border-4 border-primary">
+                <h5 class="fw-bold text-dark mb-4"><i class="bi bi-info-circle me-2"></i>Ficha Técnica</h5>
+                
+                <div class="mb-3">
+                    <small class="text-muted d-block fw-semibold">CÓDIGO DE TRAZABILIDAD</small>
+                    <span class="fs-5 font-monospace bg-light px-2 py-1 border rounded">{{ equipo.codigo_trazabilidad }}</span>
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted d-block fw-semibold">DISPOSITIVO Y MARCA</small>
+                    <div class="fs-5 fw-bold">{{ equipo.nombre }}</div>
+                    <div>{{ equipo.marca }}</div>
+                </div>
 
+                <div class="mb-3">
+                    <small class="text-muted d-block fw-semibold">UBICACIÓN</small>
+                    <div><i class="bi bi-geo-alt text-danger me-1"></i>{{ equipo.ubicacion }}</div>
+                </div>
+
+                <hr>
+
+                <div class="row text-center g-2 mt-2">
+                    <div class="col-4">
+                        <div class="p-2 bg-light rounded border">
+                            <small class="d-block text-muted" style="font-size: 0.7rem;">FUNCIÓN</small>
+                            <span class="fw-bold fs-5">{{ equipo.puntaje_funcion }}</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-2 bg-light rounded border">
+                            <small class="d-block text-muted" style="font-size: 0.7rem;">RIESGO</small>
+                            <span class="fw-bold fs-5">{{ equipo.puntaje_aplicacion }}</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-2 bg-light rounded border">
+                            <small class="d-block text-muted" style="font-size: 0.7rem;">MANT.</small>
+                            <span class="fw-bold fs-5">{{ equipo.puntaje_mantenimiento }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Eventos Activos (Historial) -->
+        <div class="col-md-8">
+            <div class="card overflow-hidden h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-journal-medical text-danger me-2"></i>Registro de Fallas e Incidentes</h5>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Reportante</th>
+                                <th>Tipología</th>
+                                <th>Descripción de la Falla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for falla in fallas %}
+                            <tr>
+                                <td class="text-nowrap"><i class="bi bi-calendar-event me-2 text-secondary"></i>{{ falla.fecha_falla }}</td>
+                                <td>{{ falla.usuario_reporta }}</td>
+                                <td><span class="badge bg-warning text-dark">{{ falla.tipo_mantenimiento }}</span></td>
+                                <td>{{ falla.descripcion }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <i class="bi bi-check-circle fs-1 d-block mb-2 text-success"></i>
+                                    No hay fallas reportadas para este equipo.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Tabla de Mantenimientos (OT) -->
+        <div class="col-12 mt-4">
+            <div class="card overflow-hidden shadow-sm">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-tools text-success me-2"></i>Historial de Mantenimiento e Intervenciones (OT)</h5>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Bioingeniero/Técnico</th>
+                                <th>Detalle del Trabajo</th>
+                                <th>Estado Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ot in intervenciones %}
+                            <tr>
+                                <td class="text-nowrap"><i class="bi bi-calendar-check me-2 text-secondary"></i>{{ ot.fecha_intervencion }}</td>
+                                <td><span class="badge bg-success-subtle text-success-emphasis">{{ ot.tipo_intervencion }}</span></td>
+                                <td>{{ ot.usuario_interviene }}</td>
+                                <td>
+                                    <strong>{{ ot.descripcion }}</strong><br>
+                                    <small class="text-muted">Repuestos: {{ ot.repuestos_utilizados }} | Horas: {{ ot.tiempo_intervencion }}h</small>
+                                </td>
+                                <td>
+                                    {% if ot.estado_final == 'Operativo' %}
+                                    <span class="text-success fw-bold"><i class="bi bi-check-circle-fill me-1"></i>Operativo</span>
+                                    {% else %}
+                                    <span class="text-danger fw-bold"><i class="bi bi-x-circle-fill me-1"></i>{{ ot.estado_final }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+                                    No hay intervenciones técnicas registradas para este dispositivo.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
-<!-- Bootstrap 5 Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

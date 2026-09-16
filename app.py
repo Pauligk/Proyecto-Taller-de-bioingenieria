@@ -28,11 +28,7 @@ def agregar_equipo():
         
     return redirect(url_for("panel_principal"))
 
-@app.route("/equipo/<int:equipo_id>")
-def detalle_equipo(equipo_id):
-    equipo, fallas = obtener_equipo_con_fallas(equipo_id)
-    
-    return render_template("detalle.html", equipo=equipo, fallas=fallas)
+
 
 @app.route("/equipo/<int:equipo_id>/reportar_falla", methods=["POST"])
 def reportar_falla(equipo_id):
@@ -47,6 +43,31 @@ def reportar_falla(equipo_id):
 
     return redirect(url_for("detalle_equipo", equipo_id=equipo_id))
 
+@app.route("/equipo/<int:equipo_id>/cargar_intervencion", methods=["POST"])
+def cargar_intervencion(equipo_id):
+    insertar_intervencion(
+        equipo_id,
+        request.form["tipo_intervencion"].strip(),
+        request.form["fecha_intervencion"].strip(),
+        request.form["usuario_interviene"].strip(),
+        request.form["area"].strip(),
+        request.form["descripcion"].strip(),
+        request.form["falla_solucionada"].strip(),
+        request.form["repuestos_utilizados"].strip(),
+        request.form["estado_final"].strip(),
+        float(request.form["tiempo_intervencion"]),
+        "Carga rápida desde modal" # Observaciones por defecto
+    )
+    return redirect(url_for("panel_principal"))
+
+@app.route("/equipo/<int:equipo_id>")
+def detalle_equipo(equipo_id):
+    # Usamos la nueva función para traer el combo completo
+    equipo, fallas, intervenciones = obtener_historia_completa(equipo_id)
+    
+    # Le enviamos las 3 cosas al HTML
+    return render_template("detalle.html", equipo=equipo, fallas=fallas, intervenciones=intervenciones)
+
 @app.route("/eliminar/<int:id>")
 def eliminar(id):
     baja_total(id)
@@ -58,6 +79,34 @@ def equipos_descartados():
     filas_baja = obtener_equipos_descartados() 
     # Se los mandamos a tu nueva pantalla HTML
     return render_template("descartados.html", equipos=filas_baja)
+
+@app.route("/reportar_falla_general", methods=["POST"])
+def reportar_falla_general():
+    insertar_falla(
+        int(request.form["equipo_id"]),
+        datetime.now().strftime("%Y-%m-%d %H:%M"),
+        request.form["usuario"].strip(),
+        request.form["tipo"].strip(),
+        request.form["descripcion"].strip()
+    )
+    return redirect(url_for("panel_principal"))
+
+@app.route("/cargar_intervencion_general", methods=["POST"])
+def cargar_intervencion_general():
+    insertar_intervencion(
+        int(request.form["equipo_id"]),
+        request.form["tipo_intervencion"].strip(),
+        request.form["fecha_intervencion"].strip(),
+        request.form["usuario_interviene"].strip(),
+        request.form["area"].strip(),
+        request.form["descripcion"].strip(),
+        request.form["falla_solucionada"].strip(),
+        request.form["repuestos_utilizados"].strip(),
+        request.form["estado_final"].strip(),
+        float(request.form["tiempo_intervencion"]),
+        "Carga general desde panel maestro"
+    )
+    return redirect(url_for("panel_principal"))
 
 if __name__ == "__main__":
     inicializar_base_de_datos()
