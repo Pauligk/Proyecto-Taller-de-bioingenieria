@@ -20,6 +20,7 @@ def inicializar_base_de_datos():
     CREATE TABLE IF NOT EXISTS equipos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         codigo_trazabilidad TEXT UNIQUE NOT NULL,
+        numero_serie TEXT NOT NULL,
         nombre TEXT NOT NULL,
         marca TEXT NOT NULL,
         ubicacion TEXT NOT NULL,
@@ -114,9 +115,9 @@ def insertar_equipo(datos):
     try:
         conexion.execute("""
         INSERT INTO equipos (
-            codigo_trazabilidad, nombre, marca, ubicacion, 
+            codigo_trazabilidad, numero_serie, nombre, marca, ubicacion, 
             puntaje_funcion, puntaje_aplicacion, puntaje_mantenimiento, manual_url
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, datos)
         conexion.commit()
         return True
@@ -201,5 +202,14 @@ def obtener_equipos_descartados():
         WHERE e.estado = 'Descartado'
         GROUP BY e.id
         """).fetchall()
+    finally:
+        conexion.close()
+
+def restaurar_equipo_activo(equipo_id):
+    """Cambia el estado del equipo de 'Mantenimiento' nuevamente a 'Activo'"""
+    conexion = obtener_conexion()
+    try:
+        conexion.execute("UPDATE equipos SET estado = 'Activo' WHERE id = ?", (equipo_id,))
+        conexion.commit()
     finally:
         conexion.close()

@@ -15,6 +15,7 @@ def panel_principal():
 def agregar_equipo():
     datos = ( 
         request.form["codigo"].strip(),
+        request.form.get("numero_serie", "").strip(),
         request.form["nombre"].strip(),
         request.form["marca"].strip(),
         request.form["ubicacion"].strip(),
@@ -73,6 +74,13 @@ def eliminar(id):
     baja_total(id)
     return redirect(url_for("panel_principal"))
 
+@app.route("/equipo/<int:id>/enviar_mantenimiento")
+def enviar_a_mantenimiento(id):
+    # Llama a tu función de db.py para cambiar el estado
+    baja_mantenimiento_equipo(id)
+    # Recarga la página principal
+    return redirect(url_for("panel_principal"))
+
 @app.route("/descartados")
 def equipos_descartados():
     # Usamos la función de db.py para traer solo los descartados
@@ -107,6 +115,18 @@ def cargar_intervencion_general():
         "Carga general desde panel maestro"
     )
     return redirect(url_for("panel_principal"))
+
+@app.route("/en_mantenimiento")
+def equipos_en_mantenimiento():
+    # 1. Consultamos a la base de datos por los equipos en reparación
+    filas_mantenimiento = obtener_equipos_mantenimiento()
+    
+    # 2. Enviamos esos datos a una nueva pantalla visual
+    return render_template("mantenimiento.html", equipos=filas_mantenimiento)
+@app.route("/equipo/<int:id>/restaurar_activo")
+def restaurar_activo(id):
+    restaurar_equipo_activo(id)
+    return redirect(url_for("equipos_en_mantenimiento"))
 
 if __name__ == "__main__":
     inicializar_base_de_datos()
