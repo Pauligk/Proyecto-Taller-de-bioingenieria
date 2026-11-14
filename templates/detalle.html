@@ -36,9 +36,13 @@
             <div class="card p-4 h-100 border-top border-4 border-primary">
                 <h5 class="fw-bold text-dark mb-4"><i class="bi bi-info-circle me-2"></i>Ficha Técnica</h5>
                 
+                
                 <div class="mb-3">
                     <small class="text-muted d-block fw-semibold">CÓDIGO DE TRAZABILIDAD</small>
                     <span class="fs-5 font-monospace bg-light px-2 py-1 border rounded">{{ equipo.codigo_trazabilidad }}</span>
+                    
+                    <!-- Nuevo elemento: Número de Serie -->
+                    <div class="text-muted small mt-2"><i class="bi bi-upc-scan me-1"></i>SN: {{ equipo.numero_serie }}</div>
                 </div>
                 
                 <div class="mb-3">

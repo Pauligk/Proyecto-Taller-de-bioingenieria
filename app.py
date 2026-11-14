@@ -9,7 +9,8 @@ app = Flask(__name__)
 def panel_principal():
     filas = obtener_equipos()
     equipos = procesar_triaje_equipos(filas)
-    return render_template("index.html", equipos=equipos)
+    cantidad_mantenimiento = len(obtener_equipos_mantenimiento())
+    return render_template("index.html", equipos=equipos, cantidad_mantenimiento=cantidad_mantenimiento)
 
 @app.route("/agregar_equipo", methods=["POST"])
 def agregar_equipo():
@@ -123,10 +124,18 @@ def equipos_en_mantenimiento():
     
     # 2. Enviamos esos datos a una nueva pantalla visual
     return render_template("mantenimiento.html", equipos=filas_mantenimiento)
+
+
+ 
+ 
+
 @app.route("/equipo/<int:id>/restaurar_activo")
 def restaurar_activo(id):
     restaurar_equipo_activo(id)
     return redirect(url_for("equipos_en_mantenimiento"))
+
+
+
 
 if __name__ == "__main__":
     inicializar_base_de_datos()

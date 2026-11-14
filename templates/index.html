@@ -108,16 +108,20 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card stat-card stat-success p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="text-muted small fw-semibold">ESTADO NORMAL</div>
-                        <div class="fs-3 fw-bold" style="color: #cbd5e1;">{{ equipos|selectattr('prioridad', 'equalto', 'BAJA')|list|length }}</div>
+        <div class="card stat-card stat-success p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="text-muted small fw-semibold">EN MANTENIMIENTO</div>
+                    <div class="fs-3 fw-bold text-success">
+                        {{cantidad_mantenimiento}}
                     </div>
-                    <div class="icon-success p-3 rounded-circle"><i class="bi bi-check-circle fs-4"></i></div>
+                </div>
+                <div class="bg-success-subtle text-success p-3 rounded-circle">
+                    <i class="bi bi-check-circle fs-4"></i>
                 </div>
             </div>
         </div>
+    </div>    
     </div>
 
     <!-- Controles (Buscador y Botones Generales) -->
@@ -204,12 +208,12 @@
         </div>
         
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" id="tablaEquipos">
+          <table class="table table-hover align-middle mb-0" id="tablaEquipos">
                 <thead>
                     <tr>
                         <th class="text-center">Prioridad</th>
                         <th>EM</th>
-                        <th>Código</th>
+                        <th>Modelo / SN</th>
                         <th>Dispositivo</th>
                         <th>Ubicación</th>
                         <th class="text-center">Gestión Rápida</th>
@@ -218,34 +222,38 @@
                 <tbody>
                     {% for eq in equipos %}
                     <tr>
+                        <!-- 1. Prioridad -->
                         <td class="text-center">
                             <span class="badge bg-{{ eq.color_badge }} badge-priority shadow-sm">{{ eq.prioridad }}</span>
                         </td>
+                        <!-- 2. EM -->
                         <td>
                             <span class="fs-5 fw-bold text-dark">{{ "%.1f"|format(eq.indice_em) }}</span>
                         </td>
-                        <td><span class="badge bg-light text-secondary font-monospace border">{{ eq.codigo_trazabilidad }}</span></td>
+                        <!-- 3. Código y Número de Serie -->
+                        <td>
+                            <span class="badge bg-light text-secondary font-monospace border">{{ eq.codigo_trazabilidad }}</span>
+                            <!-- Se asume que la variable del nro de serie es eq.nro_serie. Cámbiala si tu modelo usa otro nombre -->
+                            <div class="small text-muted mt-1"><i class="bi bi-upc-scan"></i> SN: {{ eq.numero_serie }}</div>
+                        </td>
+                        <!-- 4. Dispositivo -->
                         <td>
                             <div class="fw-bold text-dark">{{ eq.nombre }}</div>
                             <div class="text-muted small">{{ eq.marca }}</div>
                         </td>
-                        <td>
-                            <div class="fw-bold text-dark">{{ eq.nombre }}</div>
-                            <div class="text-muted small">{{ eq.marca }}</div>
-                            <!-- NUEVA LÍNEA PARA MOSTRAR EL NÚMERO DE SERIE -->
-                            <div class="text-muted small"><i class="bi bi-upc-scan me-1"></i>SN: {{ eq.numero_serie or 'S/N' }}</div>
-                        </td>
+                        <!-- 5. Ubicación -->
                         <td><i class="bi bi-geo-alt text-secondary me-1"></i>{{ eq.ubicacion }}</td>
+                        <!-- 6. Gestión Rápida (Todos los botones agrupados en un solo <td>) -->
                         <td class="text-center">
-                            <!-- Botones de Acción Individuales (Sobrios) -->
                             <div class="btn-group shadow-sm" role="group">
                                 <a href="/equipo/{{ eq.id }}" class="btn btn-outline-secondary btn-sm" title="Historia Clínica">
                                     <i class="bi bi-file-earmark-medical"></i> Ficha
                                 </a>
+                                <!--  botón de mantenimiento  -->
+                               
                                 <a href="/equipo/{{ eq.id }}/enviar_mantenimiento" class="btn btn-outline-warning btn-sm" title="Enviar a Mantenimiento">
                                     <i class="bi bi-wrench-adjustable"></i>
                                 </a>
-                                <!-- El botón de eliminar se mantiene rojo sutil por cuestiones de seguridad -->
                                 <a href="/eliminar/{{ eq.id }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Confirma la baja del activo?');" title="Dar de Baja">
                                     <i class="bi bi-trash3"></i>
                                 </a>

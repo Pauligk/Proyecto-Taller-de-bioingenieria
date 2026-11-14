@@ -46,59 +46,62 @@
         
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th>Código / Trazabilidad</th>
-                        <th>Dispositivo</th>
-                        <th>Ubicación Original</th>
-                        <th>Fallas Históricas</th>
-                        <th class="text-center">Auditoría</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for eq in equipos %}
-                    <tr>
-                        <td>
-                            <span class="badge bg-warning-subtle text-warning-emphasis font-monospace border px-2 py-1">
-                                {{ eq.codigo_trazabilidad }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="fw-bold text-dark">{{ eq.nombre }}</div>
-                            <div class="text-muted small">{{ eq.marca }}</div>
-                        </td>
-                        <td><i class="bi bi-geo-alt text-secondary me-1"></i>{{ eq.ubicacion }}</td>
-                        <td>
-                            <span class="badge bg-light text-dark border">
-                                <i class="bi bi-exclamation-triangle me-1 text-warning"></i>{{ eq.cantidad_fallas }} reportes
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <a href="/equipo/{{ eq.id }}" class="btn btn-outline-primary btn-sm btn-action">
-                                <i class="bi bi-clipboard2-pulse me-1"></i> Ver Historia Clínica
-                            </a>
-                        </td>
-                        <td class="text-center">
-                            <!-- NUEVO BOTÓN PARA VOLVER A ACTIVOS -->
-                            <a href="/equipo/{{ eq.id }}/restaurar_activo" class="btn btn-outline-success btn-sm btn-action me-1" title="Alta de Mantenimiento">
-                                <i class="bi bi-arrow-return-left"></i> Alta
-                            </a>
-                            <!-- BOTÓN EXISTENTE DE HISTORIA CLÍNICA -->
-                            <a href="/equipo/{{ eq.id }}" class="btn btn-outline-primary btn-sm btn-action">
-                                <i class="bi bi-clipboard2-pulse me-1"></i> Ver Historia Clínica
-                            </a>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
-                            <i class="bi bi-check-circle fs-1 d-block mb-3 text-success"></i>
-                            No hay equipos en mantenimiento en este momento. ¡Excelente trabajo!
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>Código / SN</th>
+                            <th>Dispositivo</th>
+                            <th>Ubicación Original</th>
+                            <th>Fallas Históricas</th>
+                            <th class="text-center">Auditoría / Gestión</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for eq in equipos %}
+                        <tr>
+                            <!-- 1. Código y SN -->
+                            <td>
+                                <span class="badge bg-warning-subtle text-warning-emphasis font-monospace border px-2 py-1">
+                                    {{ eq.codigo_trazabilidad }}
+                                </span>
+                                <div class="small text-muted mt-1"><i class="bi bi-upc-scan"></i> SN: {{ eq.numero_serie }}</div>
+                            </td>
+                            <!-- 2. Dispositivo -->
+                            <td>
+                                <div class="fw-bold text-dark">{{ eq.nombre }}</div>
+                                <div class="text-muted small">{{ eq.marca }}</div>
+                            </td>
+                            <!-- 3. Ubicación -->
+                            <td><i class="bi bi-geo-alt text-secondary me-1"></i>{{ eq.ubicacion }}</td>
+                            <!-- 4. Fallas -->
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="bi bi-exclamation-triangle me-1 text-warning"></i>{{ eq.cantidad_fallas }} reportes
+                                </span>
+                            </td>
+                            <!-- 5. Botones agrupados -->
+                            <td class="text-center">
+                                <div class="btn-group shadow-sm" role="group">
+                                    <a href="/equipo/{{ eq.id }}" class="btn btn-outline-primary btn-sm btn-action">
+                                        <i class="bi bi-clipboard2-pulse me-1"></i> Ficha
+                                    </a>
+                                    
+                                    <!-- Botón de Alta corregido -->
+                                    <a href="/equipo/{{ eq.id }}/restaurar_activo" class="btn btn-outline-success btn-sm btn-action">
+                                        <i class="bi bi-check-circle me-1"></i> Alta
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <i class="bi bi-check-circle fs-1 d-block mb-3 text-success"></i>
+                                No hay equipos en mantenimiento en este momento. ¡Excelente trabajo!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>
